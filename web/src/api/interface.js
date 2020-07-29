@@ -1,13 +1,10 @@
 import request from '@/utils/request'
 
-export function getProjectList(number, size) {
+export function getProjectList(params) {
   return request({
     url: '/my_platform/project/list',
     method: 'get',
-    params: {
-      'number': number,
-      'size': size
-    }
+    params
   })
 }
 
