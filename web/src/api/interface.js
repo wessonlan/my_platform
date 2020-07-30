@@ -1,13 +1,10 @@
 import request from '@/utils/request'
 
-export function getProjectList(number, size) {
+export function getProjectList(params) {
   return request({
     url: '/my_platform/project/list',
     method: 'get',
-    params: {
-      'number': number,
-      'size': size
-    }
+    params
   })
 }
 
@@ -25,16 +22,4 @@ export function updateProject(data) {
     method: 'put',
     data
   })
-}
-
-export function searchProject(projectName, number, size) {
-    return request({
-      url: '/my_platform/project/searchProject',
-      method: 'get',
-      params: {
-        'projectName': projectName,
-        'number': number,
-        'size': size
-      }
-    })
 }

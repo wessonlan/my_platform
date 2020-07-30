@@ -58,23 +58,29 @@ export const constantRoutes = [
   {
     path: '/mock',
     component: Layout,
-    redirect: '/mock/mock-service/project-list',
+    redirect: '/mock/mock-manege/project',
     name: 'Mock',
     //若你想不管路由下面的 children 声明的个数都显示你的根路由,alwaysShow: true
     alwaysShow: true,
     meta: {
       // 设置该路由在侧边栏和面包屑中展示的名字
       title: 'mock服务',
-      icon: 'nested'
+      icon: 'table'
     },
     children: [
       {
         path: 'project-management',
         name: 'ProjectManagement',
         meta: { title: '项目管理'},
-        component: () => import('@/views/mock/mock-service/project-list')
+        component: () => import('@/views/mock/mock-manege/project')
+      },
+      {
+        path: 'interface-management',
+        name: 'InterfaceManagement',
+        meta: { title: '接口管理' },
+        component: () => import('@/views/mock/interface-manege/interface')
       }
-    ]
+    ],
 
   },
 
