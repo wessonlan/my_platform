@@ -1,8 +1,10 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input placeholder="项目名称" style="width: 200px;" class="filter-item" />
-      <el-button class="filter-item"  type="primary" icon="el-icon-search" style="margin-left:10px;">
+      <el-input placeholder="项目名称" style="width: 200px;" class="filter-item" v-model="listQueryInfo.projectName"
+                @keyup.enter.native="handleProjectSearch(listQueryInfo.projectName)" clearable/>
+      <el-button class="filter-item"  type="primary" icon="el-icon-search" style="margin-left:10px;"
+                 @click="handleProjectSearch(listQueryInfo.projectName)">
         查询
       </el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit"
@@ -51,7 +53,7 @@
       </el-table-column>
     </el-table>
     <pagination v-show="pageInfo.totalElements>0" :total="pageInfo.totalElements" :page.sync="pageInfo.number"
-                :limit.sync="pageInfo.size" @pagination="projectGet" />
+                :limit.sync="pageInfo.size" @pagination="handleProjectSearch" />
 
     <el-dialog :visible.sync="dialogUpdateVisible" :title="dialogStatus==='create'?'添加项目':'更新项目'" >
       <el-form ref="dataForm" :model="createInfo" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
@@ -75,7 +77,7 @@
 </template>
 
 <script>
-  import { getProjectList, createProject, updateProject } from '@/api/project'
+  import { getProjectList, createProject, updateProject, searchProject } from '@/api/project'
   import Pagination from '@/components/Pagination'
 
   export default {
@@ -91,18 +93,19 @@
           projectName: '',
           description: ''
         },
-        listQuery: {
+        listQueryInfo: {
           page: 1,
           limit: 10,
-          projectName: undefined
+          projectName: undefined,
+          projectId: undefined
 
         },
         pageInfo: {
           number: 1, //第几页
           size: 10, //每页最大数量
-          totalElements: undefined, //总共多少条
+          totalElements: NaN, //总共多少条
           totalPages: undefined, //总共多少页
-          numberOfElements: undefined //当前页的数据量
+          numberOfElements: undefined, //当前页的数据量
         }
       }
     },
@@ -154,11 +157,26 @@
           this.projectGet()
           this.$notify({
             title: '成功',
-            message: this.createInfo.projectName + '项目更新成功',
+            message: '项目更新成功',
             type: 'success',
             duration: 2000
           })
         })
+      },
+      handleProjectSearch() { //条件查询
+        if (this.listQueryInfo.projectName === undefined || this.listQueryInfo.projectName === '') {
+          this.projectGet()
+        } else {
+          searchProject(this.listQueryInfo.projectName, this.pageInfo.number, this.pageInfo.size).then(response => {
+            this.list = response.data.content
+            this.pageInfo.size = response.data.size
+            this.pageInfo.number = response.data.number + 1
+            this.pageInfo.totalElements = response.data.totalElements
+            this.pageInfo.totalPages = response.data.totalPages
+            this.pageInfo.numberOfElements = response.data.numberOfElements
+            this.listLoading = false
+          })
+        }
       }
     }
   }

@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/project")
@@ -46,5 +45,10 @@ public class ProjectController {
         project.setCreateUser("pingguo");
         projectService.update(project);
         return Result.success(project);
+    }
+
+    @GetMapping("/searchProject")
+    public Object searchProject(Project project, int number, int size) throws Exception {
+        return Result.success(projectService.searchProject(project, number, size));
     }
 }

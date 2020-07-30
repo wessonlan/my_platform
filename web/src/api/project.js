@@ -26,3 +26,15 @@ export function updateProject(data) {
     data
   })
 }
+
+export function searchProject(projectName, number, size) {
+    return request({
+      url: '/my_platform/project/searchProject',
+      method: 'get',
+      params: {
+        'projectName': projectName,
+        'number': number,
+        'size': size
+      }
+    })
+}
