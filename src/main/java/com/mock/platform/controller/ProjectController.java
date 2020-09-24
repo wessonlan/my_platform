@@ -12,12 +12,15 @@ import java.util.Date;
 
 @RestController
 @RequestMapping(value = "/project")
+/**
+ * @author wessonlan
+ */
 public class ProjectController {
 
     @Autowired
     ProjectService projectService;
 
-//    @GetMapping("/list")
+//    @GetMapping("/list") //测试接口返回演示用接口
 //    public Result projectList() throws Exception {
 //        List<Project> projectList = projectService.getProjectList();
 //        return Result.success(projectList);

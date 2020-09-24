@@ -43,6 +43,14 @@ public class ProjectService {
         projectDAO.save(project);
     }
 
+
+    /**
+     * 项目查询
+     * @param project Project对象
+     * @param number 第几页
+     * @param size 每页数量大小
+     * @return Page 结果数组
+     */
     public Page<Project> searchProject(Project project, int number, int size) {
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
         Pageable pageable = PageRequest.of(number - 1, size , sort);

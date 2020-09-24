@@ -14,13 +14,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 @RestController //标记这是控制器，下面每个方法的返回值都会直接转换成json数据格式
 @RequestMapping("user")
+/**
+ * @author wessonlan
+ */
 public class UserController {
     @Autowired //自动装配 CategoryService
+    /**
+     * userService对象
+     */
     UserService userService;
 
-    @GetMapping("/userList") //当访问users,会获取所有的User对象集合，并返回。RestController会自动转成json给浏览器
+    @GetMapping("/userList")
+    /**
+     * 当访问users,会获取所有的User对象集合，并返回。
+     * RestController会自动转成json给浏览器
+     */
     public List<User> userList() throws Exception {
         return userService.userList();
     }
@@ -30,7 +41,7 @@ public class UserController {
     public Result login(@RequestBody UserRequest user) throws Exception {
         String username = user.getUsername();
         String password = user.getPassword();
-        Map<String, Object> userToken = new HashMap<>();
+        Map<String, Object> userToken = new HashMap<>(4);
         if (userService.isUserExist(username, password)) {
             userToken.put("token","admin-token");
             return Result.success(userToken);
@@ -43,9 +54,10 @@ public class UserController {
     @GetMapping("/useInfo")
     public Result useInfo(HttpServletRequest request) throws Exception {
         String token = request.getParameter("token");
-        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>(8);
         JSONArray roles = new JSONArray();
-        if (token.equals("admin-token")) {
+        String allowableToken = "admin-token";
+        if (token.equals(allowableToken)) {
             roles.add("admin");
             result.put("roles", roles);
             result.put("introduction", "我是超级管理员");

@@ -1,8 +1,11 @@
 package com.mock.platform.common;
 
+/**
+ * @author swk5001400
+ */
 public class Result {
-    private static int SUCCESS_CODE = 20000;
-    private static int FAIL_CODE = 30000;
+    private static final int SUCCESS_CODE = 20000;
+    private static final int FAIL_CODE = 30000;
 
     private int code;
     private String message;

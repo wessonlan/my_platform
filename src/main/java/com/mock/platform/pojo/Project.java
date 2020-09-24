@@ -13,6 +13,9 @@ import java.util.Date;
 @Table(name = "project") //表示对应的表名是 project
 @JsonIgnoreProperties({"handler", "hibernateLazyInitializer"})
 @Data
+/**
+ * @author wessonlan
+ */
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
