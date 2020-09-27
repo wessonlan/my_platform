@@ -15,7 +15,7 @@ import java.util.Date;
 /**
  * @author wessonlan
  */
-public class Interface {
+public class MockInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

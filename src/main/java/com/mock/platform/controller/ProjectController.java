@@ -34,7 +34,7 @@ public class ProjectController {
         project.setCreateUser("pingguo");
         try {
             projectService.add(project);
-            return Result.success(project);
+            return Result.success();
         } catch (MpException e) {
             return Result.fail(Result.ALREADY_EXIST_CODE, String.format("%s已存在", project.getProjectName()));
         }
