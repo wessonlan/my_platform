@@ -1,6 +1,7 @@
 package com.mock.platform.controller;
 
 
+import com.mock.platform.common.MpException;
 import com.mock.platform.common.Result;
 import com.mock.platform.pojo.Project;
 import com.mock.platform.service.ProjectService;
@@ -20,12 +21,6 @@ public class ProjectController {
     @Autowired
     ProjectService projectService;
 
-//    @GetMapping("/list") //测试接口返回演示用接口
-//    public Result projectList() throws Exception {
-//        List<Project> projectList = projectService.getProjectList();
-//        return Result.success(projectList);
-//    }
-
     @GetMapping("/list")
     public Result projectList(int number, int size) throws Exception {
         Page projectList = projectService.getProjectList(number, size);
@@ -37,8 +32,12 @@ public class ProjectController {
         project.setCreateTime(new Date());
         project.setUid(1);
         project.setCreateUser("pingguo");
-        projectService.add(project);
-        return Result.success(project);
+        try {
+            projectService.add(project);
+            return Result.success(project);
+        } catch (MpException e) {
+            return Result.fail(Result.ALREADY_EXIST_CODE, String.format("%s已存在", project.getProjectName()));
+        }
     }
 
     @PutMapping("/list")
@@ -52,6 +51,10 @@ public class ProjectController {
 
     @GetMapping("/searchProject")
     public Object searchProject(Project project, int number, int size) throws Exception {
-        return Result.success(projectService.searchProject(project, number, size));
+        try {
+            return Result.success(projectService.searchProject(project, number, size));
+        } catch (MpException e) {
+            return Result.fail(Result.INPUT_EMPTY, "项目名称不能为空");
+        }
     }
 }

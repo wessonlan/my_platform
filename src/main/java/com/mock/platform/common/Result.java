@@ -4,8 +4,12 @@ package com.mock.platform.common;
  * @author swk5001400
  */
 public class Result {
+
     private static final int SUCCESS_CODE = 20000;
     private static final int FAIL_CODE = 30000;
+    public static final int ALREADY_EXIST_CODE = 30001;
+    public static final int INPUT_EMPTY = 30002;
+
 
     private int code;
     private String message;
@@ -25,6 +29,16 @@ public class Result {
     }
     public static Result fail(String message) {
         return new Result(FAIL_CODE, message,null);
+    }
+
+    /**
+     * 传入失败状态码，返回Result结果
+     * @param code 失败状态码
+     * @param message 文本提示
+     * @return Result结果
+     */
+    public static Result fail(int code, String message) {
+        return new Result(code, message, null);
     }
 
     public int getCode() {

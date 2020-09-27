@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-input placeholder="接口名称" style="width: 200px; margin-right:10px" class="filter-item" clearable/>
-    <el-select v-model="value8" filterable placeholder="搜索项目" clearable>
+    <el-select v-model="value8" filterable placeholder="选择项目" clearable>
       <el-option
         v-for="item in options"
         :key="item.value"
@@ -13,12 +13,12 @@
       查询
     </el-button>
     <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit"
-               @click="InterfaceCreate">
+               @click="interfaceCreate">
       新建
     </el-button>
     <div style="margin-top:20px;"></div>
   <!--接口表单-->
-  <el-dialog :visible.sync="dialogUpdateVisible">
+  <el-dialog :visible.sync="interfaceDialogUpdateVisible">
     <el-form ref="form" :model="form" label-width="80px">
       <el-form-item label="接口名称">
         <el-input v-model="form.name"></el-input>
@@ -48,7 +48,31 @@
     </el-form>
   </el-dialog>
 
-  <!--接口规则表单-->
+  <!--新增/编辑接口规则-->
+  <!--规则名称、过滤参数、过滤body、response_code、response_body、 -->
+  <el-dialog :visible.sync="ruleDialogUpdateVisible">
+    <el-form ref="form" :model="form" label-width="80px">
+      <el-form-item label="规则名称">
+        <el-input v-model="form.rule_name"></el-input>
+      </el-form-item>
+      <el-form-item label="过滤-params">
+        <el-input v-model="form.filter_name"></el-input>
+      </el-form-item>
+      <el-form-item label="过滤-body">
+        <el-input v-model="form.filter_body"></el-input>
+      </el-form-item>
+      <el-form-item label="返回码">
+        <el-input v-model="form.response_code"></el-input>
+      </el-form-item>
+      <el-form-item label="响应体">
+        <el-input type="textarea" v-model="form.response_body"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="onSubmit">立即创建</el-button>
+        <el-button>取消</el-button>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
 
   <!--展开table-->
   <el-table
@@ -65,7 +89,7 @@
           <el-table-column
             align="right">
             <template slot="header" slot-scope="scope">
-              <el-button type="success" size="mini" plain @click="ruleCreate()" style="margin-right: 100px">新增规则</el-button>
+              <el-button type="success" size="mini" plain @click="ruleCreate" style="margin-right: 100px">新增规则</el-button>
             </template>
             <template slot-scope="scope">
               <el-button size="mini" type="text" @click="ruleUpdate(scope.row.id)">修改</el-button>
@@ -116,7 +140,8 @@
   export default {
     data() {
       return {
-        dialogUpdateVisible: false,
+        interfaceDialogUpdateVisible: false,
+        ruleDialogUpdateVisible: false,
         tableData: [{
           date: '1',
           name: '用户信息接口',
@@ -179,9 +204,13 @@
       onSubmit() {
         console.log('submit!');
       },
-      InterfaceCreate() {
-        this.dialogUpdateVisible = true
+      interfaceCreate() {
+        this.interfaceDialogUpdateVisible = true
+      },
+      ruleCreate() {
+        this.ruleDialogUpdateVisible = true
       }
+
     },
   }
 </script>

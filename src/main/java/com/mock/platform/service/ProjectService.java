@@ -1,5 +1,6 @@
 package com.mock.platform.service;
 
+import com.mock.platform.common.MpException;
 import com.mock.platform.dao.ProjectDAO;
 import com.mock.platform.pojo.Project;
 import org.apache.commons.lang3.StringUtils;
@@ -24,11 +25,6 @@ public class ProjectService {
     @Autowired
     ProjectDAO projectDAO;
 
-//    public List<Project> getProjectList() {
-//        Sort sort = Sort.by(Sort.Direction.DESC, "id");
-//        return projectDAO.findAll(sort);
-//    }
-
     public Page<Project> getProjectList(int number, int size) {
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
         Pageable pageable = PageRequest.of(number - 1, size, sort);
@@ -36,6 +32,12 @@ public class ProjectService {
     }
 
     public void add(Project project) {
+        if (StringUtils.isBlank(project.getProjectName())) {
+            MpException.throwException("项目名称为空");
+        }
+        if (projectDAO.findByProjectName(project.getProjectName()) != null) {
+            MpException.throwException("项目名称已存在");
+        }
         projectDAO.save(project);
     }
 
@@ -46,12 +48,16 @@ public class ProjectService {
 
     /**
      * 项目查询
+     * author wessonlan
      * @param project Project对象
      * @param number 第几页
      * @param size 每页数量大小
      * @return Page 结果数组
      */
-    public Page<Project> searchProject(Project project, int number, int size) {
+    public Page searchProject(Project project, int number, int size) {
+        if (StringUtils.isBlank(project.getProjectName())) {
+            MpException.throwException("项目名称为空");
+        }
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
         Pageable pageable = PageRequest.of(number - 1, size , sort);
         Specification<Project> query = new Specification<Project>() {
