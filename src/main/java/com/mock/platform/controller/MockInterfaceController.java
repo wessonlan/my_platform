@@ -15,7 +15,7 @@ import java.util.Date;
  * @author wessonlan
  */
 @RestController
-@RequestMapping(value = "/interface")
+@RequestMapping(value = "/mockInterface")
 public class MockInterfaceController {
     @Autowired
     MockInterfaceService mockInterfaceService;

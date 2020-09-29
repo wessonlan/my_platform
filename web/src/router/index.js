@@ -72,13 +72,13 @@ export const constantRoutes = [
         path: 'project-management',
         name: 'ProjectManagement',
         meta: { title: '项目管理'},
-        component: () => import('@/views/mock/mock-manege/project')
+        component: () => import('@/views/mock/project-manage/project')
       },
       {
         path: 'interface-management',
         name: 'InterfaceManagement',
         meta: { title: '接口管理' },
-        component: () => import('@/views/mock/interface-manege/interface')
+        component: () => import('@/views/mock/mockInterface-manage/mockInterface')
       }
     ],
 
